@@ -24,10 +24,11 @@ class TreeView extends View
   panel: null
 
   @content: ->
-    @div class: 'tree-view-resizer tool-panel', 'data-show-on-right-side': atom.config.get('tree-view.showOnRightSide'), =>
-      @div class: 'tree-view-scroller', outlet: 'scroller', =>
-        @ol class: 'tree-view full-menu list-tree has-collapsable-children focusable-panel', tabindex: -1, outlet: 'list'
-      @div class: 'tree-view-resize-handle', outlet: 'resizeHandle'
+    @div class: 'webgl-studio-tree-view-resizer tool-panel', 'data-show-on-right-side': atom.config.get('webgl-studio-tree-view.showOnRightSide'), =>
+      @h5 class: 'webgl-studio-tree-view-title', outlet: 'treeViewTitle', 'WebGL Studio'
+      @div class: 'webgl-studio-tree-view-scroller', outlet: 'scroller', =>
+        @ol class: 'webgl-studio-tree-view full-menu list-tree has-collapsable-children focusable-panel', tabindex: -1, outlet: 'list'
+      @div class: 'webgl-studio-tree-view-resize-handle', outlet: 'resizeHandle'
 
   initialize: (state) ->
     @disposables = new CompositeDisposable
@@ -83,7 +84,7 @@ class TreeView extends View
     @detach() if @panel?
 
   handleEvents: ->
-    @on 'dblclick', '.tree-view-resize-handle', =>
+    @on 'dblclick', '.webgl-studio-tree-view-resize-handle', =>
       @resizeToFitContent()
     @on 'click', '.entry', (e) =>
       # This prevents accidental collapsing when a .entries element is the event target
@@ -93,7 +94,7 @@ class TreeView extends View
     @on 'mousedown', '.entry', (e) =>
       @onMouseDown(e)
 
-    @on 'mousedown', '.tree-view-resize-handle', (e) => @resizeStarted(e)
+    @on 'mousedown', '.webgl-studio-tree-view-resize-handle', (e) => @resizeStarted(e)
 
     atom.commands.add @element,
      'core:move-up': @moveUp.bind(this)
@@ -102,45 +103,45 @@ class TreeView extends View
      'core:page-down': => @pageDown()
      'core:move-to-top': => @scrollToTop()
      'core:move-to-bottom': => @scrollToBottom()
-     'tree-view:expand-directory': => @expandDirectory()
-     'tree-view:recursive-expand-directory': => @expandDirectory(true)
-     'tree-view:collapse-directory': => @collapseDirectory()
-     'tree-view:recursive-collapse-directory': => @collapseDirectory(true)
-     'tree-view:open-selected-entry': => @openSelectedEntry(true)
-     'tree-view:open-selected-entry-right': => @openSelectedEntryRight()
-     'tree-view:open-selected-entry-left': => @openSelectedEntryLeft()
-     'tree-view:open-selected-entry-up': => @openSelectedEntryUp()
-     'tree-view:open-selected-entry-down': => @openSelectedEntryDown()
-     'tree-view:move': => @moveSelectedEntry()
-     'tree-view:copy': => @copySelectedEntries()
-     'tree-view:cut': => @cutSelectedEntries()
-     'tree-view:paste': => @pasteEntries()
-     'tree-view:copy-full-path': => @copySelectedEntryPath(false)
-     'tree-view:show-in-file-manager': => @showSelectedEntryInFileManager()
-     'tree-view:open-in-new-window': => @openSelectedEntryInNewWindow()
-     'tree-view:copy-project-path': => @copySelectedEntryPath(true)
+     'webgl-studio-tree-view:expand-directory': => @expandDirectory()
+     'webgl-studio-tree-view:recursive-expand-directory': => @expandDirectory(true)
+     'webgl-studio-tree-view:collapse-directory': => @collapseDirectory()
+     'webgl-studio-tree-view:recursive-collapse-directory': => @collapseDirectory(true)
+     'webgl-studio-tree-view:open-selected-entry': => @openSelectedEntry(true)
+     'webgl-studio-tree-view:open-selected-entry-right': => @openSelectedEntryRight()
+     'webgl-studio-tree-view:open-selected-entry-left': => @openSelectedEntryLeft()
+     'webgl-studio-tree-view:open-selected-entry-up': => @openSelectedEntryUp()
+     'webgl-studio-tree-view:open-selected-entry-down': => @openSelectedEntryDown()
+     'webgl-studio-tree-view:move': => @moveSelectedEntry()
+     'webgl-studio-tree-view:copy': => @copySelectedEntries()
+     'webgl-studio-tree-view:cut': => @cutSelectedEntries()
+     'webgl-studio-tree-view:paste': => @pasteEntries()
+     'webgl-studio-tree-view:copy-full-path': => @copySelectedEntryPath(false)
+     'webgl-studio-tree-view:show-in-file-manager': => @showSelectedEntryInFileManager()
+     'webgl-studio-tree-view:open-in-new-window': => @openSelectedEntryInNewWindow()
+     'webgl-studio-tree-view:copy-project-path': => @copySelectedEntryPath(true)
      'tool-panel:unfocus': => @unfocus()
-     'tree-view:toggle-vcs-ignored-files': -> toggleConfig 'tree-view.hideVcsIgnoredFiles'
-     'tree-view:toggle-ignored-names': -> toggleConfig 'tree-view.hideIgnoredNames'
-     'tree-view:remove-project-folder': (e) => @removeProjectFolder(e)
+     'webgl-studio-tree-view:toggle-vcs-ignored-files': -> toggleConfig 'webgl-studio-tree-view.hideVcsIgnoredFiles'
+     'webgl-studio-tree-view:toggle-ignored-names': -> toggleConfig 'webgl-studio-tree-view.hideIgnoredNames'
+     'webgl-studio-tree-view:remove-project-folder': (e) => @removeProjectFolder(e)
 
     [0..8].forEach (index) =>
-      atom.commands.add @element, "tree-view:open-selected-entry-in-pane-#{index + 1}", =>
+      atom.commands.add @element, "webgl-studio-tree-view:open-selected-entry-in-pane-#{index + 1}", =>
         @openSelectedEntryInPane index
 
     @disposables.add atom.workspace.onDidChangeActivePaneItem =>
       @selectActiveFile()
     @disposables.add atom.project.onDidChangePaths =>
       @updateRoots()
-    @disposables.add atom.config.onDidChange 'tree-view.hideVcsIgnoredFiles', =>
+    @disposables.add atom.config.onDidChange 'webgl-studio-tree-view.hideVcsIgnoredFiles', =>
       @updateRoots()
-    @disposables.add atom.config.onDidChange 'tree-view.hideIgnoredNames', =>
+    @disposables.add atom.config.onDidChange 'webgl-studio-tree-view.hideIgnoredNames', =>
       @updateRoots()
     @disposables.add atom.config.onDidChange 'core.ignoredNames', =>
-      @updateRoots() if atom.config.get('tree-view.hideIgnoredNames')
-    @disposables.add atom.config.onDidChange 'tree-view.showOnRightSide', ({newValue}) =>
+      @updateRoots() if atom.config.get('webgl-studio-tree-view.hideIgnoredNames')
+    @disposables.add atom.config.onDidChange 'webgl-studio-tree-view.showOnRightSide', ({newValue}) =>
       @onSideToggled(newValue)
-    @disposables.add atom.config.onDidChange 'tree-view.sortFoldersBeforeFiles', =>
+    @disposables.add atom.config.onDidChange 'webgl-studio-tree-view.sortFoldersBeforeFiles', =>
       @updateRoots()
 
   toggle: ->
@@ -157,7 +158,7 @@ class TreeView extends View
     return if _.isEmpty(atom.project.getPaths())
 
     @panel ?=
-      if atom.config.get('tree-view.showOnRightSide')
+      if atom.config.get('webgl-studio-tree-view.showOnRightSide')
         atom.workspace.addRightPanel(item: this)
       else
         atom.workspace.addLeftPanel(item: this)
@@ -167,15 +168,15 @@ class TreeView extends View
     @scrollTopAfterAttach = @scrollTop()
 
     # Clean up copy and cut localStorage Variables
-    LocalStorage['tree-view:cutPath'] = null
-    LocalStorage['tree-view:copyPath'] = null
+    LocalStorage['webgl-studio-tree-view:cutPath'] = null
+    LocalStorage['webgl-studio-tree-view:copyPath'] = null
 
     @panel.destroy()
     @panel = null
     @unfocus()
 
   focus: ->
-    @list.focus()
+    @treeViewTitle.focus()
 
   unfocus: ->
     atom.workspace.getActivePane().activate()
@@ -216,7 +217,7 @@ class TreeView extends View
   resizeTreeView: ({pageX, which}) =>
     return @resizeStopped() unless which is 1
 
-    if atom.config.get('tree-view.showOnRightSide')
+    if atom.config.get('webgl-studio-tree-view.showOnRightSide')
       width = $(document.body).width() - pageX
     else
       width = pageX
@@ -228,7 +229,7 @@ class TreeView extends View
 
   loadIgnoredPatterns: ->
     @ignoredPatterns.length = 0
-    return unless atom.config.get('tree-view.hideIgnoredNames')
+    return unless atom.config.get('webgl-studio-tree-view.hideIgnoredNames')
 
     Minimatch ?= require('minimatch').Minimatch
 
@@ -241,6 +242,7 @@ class TreeView extends View
         console.warn "Error parsing ignore pattern (#{ignoredName}): #{error.message}"
 
   updateRoots: (expansionStates={}) ->
+
     oldExpansionStates = {}
     for root in @roots
       oldExpansionStates[root.directory.path] = root.directory.serializeExpansionState()
@@ -530,8 +532,8 @@ class TreeView extends View
     selectedPaths = @selectedPaths()
     return unless selectedPaths and selectedPaths.length > 0
     # save to localStorage so we can paste across multiple open apps
-    LocalStorage.removeItem('tree-view:cutPath')
-    LocalStorage['tree-view:copyPath'] = JSON.stringify(selectedPaths)
+    LocalStorage.removeItem('webgl-studio-tree-view:cutPath')
+    LocalStorage['webgl-studio-tree-view:copyPath'] = JSON.stringify(selectedPaths)
 
   # Public: Copy the path of the selected entry element.
   #         Save the path in localStorage, so that cutting from 2 different
@@ -543,8 +545,8 @@ class TreeView extends View
     selectedPaths = @selectedPaths()
     return unless selectedPaths and selectedPaths.length > 0
     # save to localStorage so we can paste across multiple open apps
-    LocalStorage.removeItem('tree-view:copyPath')
-    LocalStorage['tree-view:cutPath'] = JSON.stringify(selectedPaths)
+    LocalStorage.removeItem('webgl-studio-tree-view:copyPath')
+    LocalStorage['webgl-studio-tree-view:cutPath'] = JSON.stringify(selectedPaths)
 
   # Public: Paste a copied or cut item.
   #         If a file is selected, the file's parent directory is used as the
@@ -554,8 +556,8 @@ class TreeView extends View
   # Returns `destination newPath`.
   pasteEntries: ->
     selectedEntry = @selectedEntry()
-    cutPaths = if LocalStorage['tree-view:cutPath'] then JSON.parse(LocalStorage['tree-view:cutPath']) else null
-    copiedPaths = if LocalStorage['tree-view:copyPath'] then JSON.parse(LocalStorage['tree-view:copyPath']) else null
+    cutPaths = if LocalStorage['webgl-studio-tree-view:cutPath'] then JSON.parse(LocalStorage['webgl-studio-tree-view:cutPath']) else null
+    copiedPaths = if LocalStorage['webgl-studio-tree-view:copyPath'] then JSON.parse(LocalStorage['webgl-studio-tree-view:copyPath']) else null
     initialPaths = copiedPaths or cutPaths
 
     for initialPath in initialPaths ? []
@@ -659,7 +661,7 @@ class TreeView extends View
     @scrollTop(0)
 
   toggleSide: ->
-    toggleConfig('tree-view.showOnRightSide')
+    toggleConfig('webgl-studio-tree-view.showOnRightSide')
 
   onStylesheetsChanged: =>
     return unless @isVisible()

@@ -1,6 +1,6 @@
 @import "ui-variables";
 
-.tree-view-resizer {
+.webgl-studio-tree-view-resizer {
   position: relative;
   height: 100%;
   overflow: hidden;
@@ -10,7 +10,7 @@
   width: 200px;
   z-index: 2;
 
-  .tree-view-resize-handle {
+  .webgl-studio-tree-view-resize-handle {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -20,25 +20,25 @@
   }
 
   &[data-show-on-right-side='true'] {
-    .tree-view-resize-handle {
+    .webgl-studio-tree-view-resize-handle {
       left: -5px;
     }
   }
 
   &[data-show-on-right-side='false'] {
-    .tree-view-resize-handle {
+    .webgl-studio-tree-view-resize-handle {
       right: -5px;
     }
   }
 }
 
-.tree-view-scroller {
+.webgl-studio-tree-view-scroller {
   height: 100%;
   width: 100%;
   overflow: auto;
 }
 
-.tree-view {
+.webgl-studio-tree-view {
   min-width: -webkit-min-content;
   min-height: 100%;
   padding-left: @component-icon-padding;
@@ -53,8 +53,8 @@
 }
 
 .platform-win32 {
-  .tree-view-resizer {
-    .tree-view-resize-handle {
+  .webgl-studio-tree-view-resizer {
+    .webgl-studio-tree-view-resize-handle {
       cursor: ew-resize;
     }
   }

@@ -39,4 +39,4 @@ class FileView extends HTMLElement
   isPathEqual: (pathToCompare) ->
     @file.isPathEqual(pathToCompare)
 
-module.exports = document.registerElement('tree-view-file', prototype: FileView.prototype, extends: 'li')
+module.exports = document.registerElement('webgl-studio-tree-view-file', prototype: FileView.prototype, extends: 'li')

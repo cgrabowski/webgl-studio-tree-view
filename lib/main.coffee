@@ -26,16 +26,16 @@ module.exports =
     @createView() if @state.attached
 
     @disposables.add atom.commands.add('atom-workspace', {
-      'tree-view:show': => @createView().show()
-      'tree-view:toggle': => @createView().toggle()
-      'tree-view:toggle-focus': => @createView().toggleFocus()
-      'tree-view:reveal-active-file': => @createView().revealActiveFile()
-      'tree-view:toggle-side': => @createView().toggleSide()
-      'tree-view:add-file': => @createView().add(true)
-      'tree-view:add-folder': => @createView().add(false)
-      'tree-view:duplicate': => @createView().copySelectedEntry()
-      'tree-view:remove': => @createView().removeSelectedEntries()
-      'tree-view:rename': => @createView().moveSelectedEntry()
+      'webgl-studio-tree-view:show': => @createView().show()
+      'webgl-studio-tree-view:toggle': => @createView().toggle()
+      'webgl-studio-tree-view:toggle-focus': => @createView().toggleFocus()
+      'webgl-studio-tree-view:reveal-active-file': => @createView().revealActiveFile()
+      'webgl-studio-tree-view:toggle-side': => @createView().toggleSide()
+      'webgl-studio-tree-view:add-file': => @createView().add(true)
+      'webgl-studio-tree-view:add-folder': => @createView().add(false)
+      'webgl-studio-tree-view:duplicate': => @createView().copySelectedEntry()
+      'webgl-studio-tree-view:remove': => @createView().removeSelectedEntries()
+      'webgl-studio-tree-view:rename': => @createView().moveSelectedEntry()
     })
 
   deactivate: ->
@@ -51,7 +51,7 @@ module.exports =
 
   createView: ->
     unless @treeView?
-      TreeView = require './tree-view'
+      TreeView = require './webgl-studio-tree-view'
       @treeView = new TreeView(@state)
     @treeView
 

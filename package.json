@@ -1,9 +1,9 @@
 {
-  "name": "tree-view",
+  "name": "webgl-studio-tree-view",
   "version": "0.173.0",
   "main": "./lib/main",
-  "description": "Explore and open files in the current project.",
-  "repository": "https://github.com/atom/tree-view",
+  "description": "Fork of tree-view for WebGL Studio.",
+  "repository": "https://github.com/cgrabowski/tree-view",
   "license": "MIT",
   "engines": {
     "atom": "*"
