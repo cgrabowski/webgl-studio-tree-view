@@ -48,14 +48,18 @@ class TreeView extends View
       @disposables.add atom.styles.onDidRemoveStyleElement(onStylesheetsChanged)
       @disposables.add atom.styles.onDidUpdateStyleElement(onStylesheetsChanged)
 
+    console.log(state)
+
     @updateRoots(state.directoryExpansionStates)
     @selectEntry(@roots[0])
+
+    console.log(@roots)
 
     @selectEntryForPath(state.selectedPath) if state.selectedPath
     @focusAfterAttach = state.hasFocus
     @scrollTopAfterAttach = state.scrollTop if state.scrollTop
     @scrollLeftAfterAttach = state.scrollLeft if state.scrollLeft
-    @attachAfterProjectPathSet = state.attached and _.isEmpty(atom.project.getPaths())
+    @attachAfterProjectPathSet = state.attached and _.isEmpty(atom.webglStudio.project.getPaths())
     @width(state.width) if state.width > 0
     @attach() if state.attached
 
@@ -131,7 +135,7 @@ class TreeView extends View
 
     @disposables.add atom.workspace.onDidChangeActivePaneItem =>
       @selectActiveFile()
-    @disposables.add atom.project.onDidChangePaths =>
+    @disposables.add atom.webglStudio.project.onDidChangePaths =>
       @updateRoots()
     @disposables.add atom.config.onDidChange 'webgl-studio-tree-view.hideVcsIgnoredFiles', =>
       @updateRoots()
@@ -155,7 +159,7 @@ class TreeView extends View
     @focus()
 
   attach: ->
-    return if _.isEmpty(atom.project.getPaths())
+    return if _.isEmpty(atom.webglStudio.project.getPaths())
 
     @panel ?=
       if atom.config.get('webgl-studio-tree-view.showOnRightSide')
@@ -251,7 +255,9 @@ class TreeView extends View
 
     @loadIgnoredPatterns()
 
-    @roots = for projectPath in atom.project.getPaths()
+    console.log(atom.webglStudio.project.getPaths())
+
+    @roots = for projectPath in atom.webglStudio.project.getPaths()
       directory = new Directory({
         name: path.basename(projectPath)
         fullPath: projectPath
@@ -280,7 +286,7 @@ class TreeView extends View
       @deselect()
 
   revealActiveFile: ->
-    return if _.isEmpty(atom.project.getPaths())
+    return if _.isEmpty(atom.webglStudio.project.getPaths())
 
     @attach()
     @focus()
@@ -289,7 +295,7 @@ class TreeView extends View
 
     relativePath = null
     rootPath = null
-    for directory in atom.project.getDirectories()
+    for directory in atom.webglStudio.project.getDirectories()
       if directory.contains(activeFilePath)
         rootPath = directory.getPath()
         relativePath = directory.relativize(activeFilePath)
@@ -309,7 +315,7 @@ class TreeView extends View
 
   copySelectedEntryPath: (relativePath = false) ->
     if pathToCopy = @selectedPath
-      pathToCopy = atom.project.relativize(pathToCopy) if relativePath
+      pathToCopy = atom.webglStudio.project.relativize(pathToCopy) if relativePath
       atom.clipboard.write(pathToCopy)
 
   entryForPath: (entryPath) ->
@@ -611,8 +617,8 @@ class TreeView extends View
 
     # TODO: remove this conditional once the addition of Project::removePath
     # is released.
-    if atom.project.removePath?
-      atom.project.removePath(pathToRemove) if pathToRemove?
+    if atom.webglStudio.project.removePath?
+      atom.webglStudio.project.removePath(pathToRemove) if pathToRemove?
 
   selectedEntry: ->
     @list[0].querySelector('.selected')

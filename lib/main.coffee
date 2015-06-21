@@ -36,6 +36,7 @@ module.exports =
       'webgl-studio-tree-view:duplicate': => @createView().copySelectedEntry()
       'webgl-studio-tree-view:remove': => @createView().removeSelectedEntries()
       'webgl-studio-tree-view:rename': => @createView().moveSelectedEntry()
+      'webgl-studio-tree-view:open-project-tree': =>
     })
 
   deactivate: ->
